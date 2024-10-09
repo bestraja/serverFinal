@@ -2,8 +2,8 @@
 const mongoose=require("mongoose")
 
 const userSchema=mongoose.Schema({
-     firstName: String,
-     lastName: String,
+     firstname: String,
+     lastname: String,
      email: {
           type: String,
           unique: true,
@@ -11,7 +11,7 @@ const userSchema=mongoose.Schema({
      password: String,
      confirmPassword: String,
      image: String,
-
+     role:{type:String,enum:["user","admin"],default:"user"}
 })
 const user=mongoose.model("user",userSchema)
 
