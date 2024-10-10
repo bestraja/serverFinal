@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res) => {
-    const { email, password, role} = req.body;
+    const { email, password, role ,confirmPassword} = req.body;
+    console.log('Requête reçue:', req.body); 
 
     try {
         
@@ -11,7 +12,10 @@ exports.signup = async (req, res) => {
             return res.status(403).send("Non autorisé"); 
         }
 
-
+        if (password !== confirmPassword) {
+            console.log('Les mots de passe ne correspondent pas.'); // Log si mots de passe non identiques
+            return res.status(400).send({ msg: "Les mots de passe ne correspondent pas." });
+        }
         const emailExists = await User.findOne({ email: email });
         if (emailExists) {
             return res.status(400).send({ msg: "Email already exists, please login" }); 
@@ -20,12 +24,13 @@ exports.signup = async (req, res) => {
         
         const passwordHashed = await bcrypt.hash(password, 10);
         req.body.password = passwordHashed;
-
+        const confipasswordHashed = await bcrypt.hash(confirmPassword, 10);
+        req.body.confirmPassword= confipasswordHashed;
        
         if (!req.file) {
             
     
-            return res.status(400).send({ msg: "No file uploaded" });
+            return res.status(400).send({ msg: "No image  uploaded" });
                     }
             
                     // Build the image URL
@@ -48,18 +53,19 @@ exports.login=async(req,res)=>{
     
     const { email, password } = req.body
     try {
-        const existUser = await user.findOne({ email })
+        const existUser = await User.findOne({ email })
+        
         if (!existUser) {
             return res.status(400).send({ msg: "bad credential !!" })
         }
         const isMatched = await bcrypt.compare(password, existUser.password)
 
         if (!isMatched) {
-            return res.status(400).send({ msg: "bad credential !!" })
+            return res.status(400).send({ msg: "bad credential  !!" })
         }
         const payload = { _id: existUser._id }
         const token = jwt.sign(payload, process.env.secretKey,{ expiresIn: '1h' })
-
+        
           existUser.password=undefined
           res.cookie('token',token)
           return res.send({user:existUser}) 
@@ -79,7 +85,7 @@ exports.current= (req, res) => {
     }
 exports.updateuser=async(req,res)=>{
     try {
-         const result=await user.findByIdAndUpdate(req.params.id,req.body,{ new: true })
+         const result=await User.findByIdAndUpdate(req.params.id,req.body,{ new: true })
         
        res.status(200).send(result)
     } catch (error) {
@@ -93,7 +99,7 @@ exports.updatepassword=async(req,res)=>{
    
     try {
         
-      const finduser= await user.findById(req.params.id)
+      const finduser= await User.findById(req.params.id)
       const isMatched = await bcrypt.compare(currentpassword,finduser.password)
      if(isMatched)
     {   if(currentpassword==newpassword){
@@ -101,7 +107,7 @@ exports.updatepassword=async(req,res)=>{
     } 
     else  {
          const  hash_newpassword = await bcrypt.hash(newpassword,10)
-         const updatenewpassword = await user.findByIdAndUpdate(req.params.id,{password:hash_newpassword},{ new: true })
+         const updatenewpassword = await User.findByIdAndUpdate(req.params.id,{password:hash_newpassword},{ new: true })
         return    res.status(200).send(updatenewpassword)
         }
       

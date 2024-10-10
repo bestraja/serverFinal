@@ -28,6 +28,9 @@ app.get("/", (req, res) => {
 app.use('/api/user',RoutesUser)
 
 const PORT = process.env.PORT ||5050 ;
- app.listen(PORT, () =>  console.log("server is running at port : " + PORT));
 
+app.listen(PORT,(err)=>{
+  err ? console.log(err):
+  console.log("server is running");
+})
 
