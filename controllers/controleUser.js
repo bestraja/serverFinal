@@ -34,7 +34,7 @@ exports.signup = async (req, res) => {
                     }
             
                     // Build the image URL
-                    const url = `${req.protocol}://${req.get("host")}/uploads/${req.file.path}`;
+         const url = `${req.protocol}://${req.get("host")}/${req.file.path}`;
             
         // Create a new user
         const newUser = new User(req.body);
@@ -65,10 +65,16 @@ exports.login=async(req,res)=>{
         }
         const payload = { _id: existUser._id }
         const token = jwt.sign(payload, process.env.secretKey,{ expiresIn: '1h' })
-        
-          existUser.password=undefined
+        const dataSend = {
+            _id: existUser._id,
+            firstname: existUser.firstname,
+            lastname: existUser.lastname,
+            email: existUser.email,
+            image: existUser.image,
+        };
+        console.log(dataSend);
           res.cookie('token',token)
-          return res.send({user:existUser}) 
+          return res.send({ user: dataSend });
        
     } catch (error) {
         console.log(error);
