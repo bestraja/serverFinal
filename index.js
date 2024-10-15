@@ -4,6 +4,7 @@ const path = require('path');
 const cors = require("cors");
 require("dotenv").config()
 const RoutesUser = require("./routtes/routtesusers")
+const RoutesProduct=require('./routtes/RoutesProduct')
 const app = express();
 const connectdb=require("./config/connect")
 
@@ -16,7 +17,7 @@ connectdb()
 
 
 
-app.use(cors(corsOptions))
+app.use(cors())
 app.use(express.json())
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -26,6 +27,9 @@ app.get("/", (req, res) => {
     res.send("Server is running");
   });
 app.use('/api/user',RoutesUser)
+app.use('/api/product',RoutesProduct)
+
+
 
 const PORT = process.env.PORT ||5050 ;
 
