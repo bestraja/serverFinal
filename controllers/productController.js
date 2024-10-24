@@ -27,14 +27,15 @@ exports.getproducts=async(req,res)=>{
 exports.updateproduct=async(req,res)=>{
     try {
        
-      let updateproducts= await product.findByIdAndUpdate(req.params.id,req.body,{ new: true })
-    
+     
+    console.log(req.file)
       if(req.file){
         productUpdated = await  product.findOne({ _id: req.params.id })
       const url = `${req.protocol}://${req.get("host")}/${req.file.path}`
-               productUpdated.img =url
+               productUpdated.file =url
            await productUpdated.save()
     }
+    let updateproducts= await product.findByIdAndUpdate(req.params.id,req.body,{ new: true })
       return res.status(200).send(updateproducts)
 
     } catch (error) {
@@ -52,17 +53,3 @@ exports.deleteproduct=async(req,res)=>{
     }
 }
 
-exports.getproductbycategory=async(req,res)=>{
-   
-    console.log(req.query);
-    try {
-         const getProductbycategory= await product.find({category:req.query.category})
-       
-         if (getProductbycategory) {
-              return res.status(200).send(getProductbycategory)
-         }
-         else  return res.status(400).send({msg:"no products"}) 
-    } catch (error) {
-        console.log(error);
-    }
-}
