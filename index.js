@@ -3,6 +3,7 @@ const mongoose=require("mongoose")
 const path = require('path');
 const cors = require("cors");
 require("dotenv").config()
+const Stripe = require('stripe')
 const RoutesUser = require("./routtes/routtesusers")
 const RoutesProduct=require('./routtes/RoutesProduct')
 const app = express();
@@ -28,8 +29,53 @@ app.get("/", (req, res) => {
   });
 app.use('/api/user',RoutesUser)
 app.use('/api/product',RoutesProduct)
+/*****payment  */
 
+const stripe  = new Stripe(process.env.STRIPE_SECRET_KEY)
 
+app.post("/create-checkout-session",async(req,res)=>{
+
+     try{
+      const params = {
+          submit_type : 'pay',
+          mode : "payment",
+          payment_method_types : ['card'],
+          billing_address_collection : "auto",
+          shipping_options : [{shipping_rate : "shr_1QDnLHAS5sdefIl1VSllkImD"}],
+
+          line_items : req.body.map((item)=>{
+            return{
+              price_data : {
+                currency : "eur",
+                product_data : {
+                  name : item.name,
+                  
+                },
+                unit_amount : item.price * 100,
+              },
+              adjustable_quantity : {
+                enabled : true,
+                minimum : 1,
+              },
+              quantity : item.qty
+            }
+          }),
+
+          success_url : `http://localhost:3000/success`,
+          cancel_url : `http://localhost:3000/cancel`,
+
+      }
+
+      
+      const session = await stripe.checkout.sessions.create(params)
+      
+      res.status(200).json({ id: session.id });
+     }
+     catch (err){
+        res.status(err.statusCode || 500).json(err.message)
+     }
+
+})
 
 const PORT = process.env.PORT ||5050 ;
 
