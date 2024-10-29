@@ -74,7 +74,7 @@ exports.login=async(req,res)=>{
             address:existUser.address,
             telephone:existUser.telephone,
         };
-        console.log(dataSend);
+       
           res.cookie('token',token)
           return res.send({ user: dataSend });
        

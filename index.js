@@ -79,18 +79,27 @@ app.post("/create-checkout-session",async(req,res)=>{
 })
 
 //order 
-app.post('api/orders', async (req, res) => {
+app.post('/api/orders', async (req, res) => {
   try {
-    const orderData = req.body;
+   // Créer une nouvelle commande
+   console.log(req.body)
+    const order = new Order(req.body);
 
-    // Créer une nouvelle commande
-    const order = new Order(orderData);
     await order.save();
 
     res.status(201).json({ message: 'Order created successfully', order });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error creating order', error: error.message });
+  }
+});
+ 
+app.get('/api/orders', async (req, res) => {
+  try {
+      const orders = await Order.find(); // Récupère toutes les commandes
+      res.json(orders);
+  } catch (err) {
+      res.status(500).json({ message: err.message });
   }
 });
 
