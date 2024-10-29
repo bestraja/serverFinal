@@ -6,6 +6,7 @@ require("dotenv").config()
 const Stripe = require('stripe')
 const RoutesUser = require("./routtes/routtesusers")
 const RoutesProduct=require('./routtes/RoutesProduct')
+const Order = require('./modeles/Order')
 const app = express();
 const connectdb=require("./config/connect")
 
@@ -61,7 +62,7 @@ app.post("/create-checkout-session",async(req,res)=>{
             }
           }),
 
-          success_url : `http://localhost:3000/success`,
+          success_url :`http://localhost:3000/success`, 
           cancel_url : `http://localhost:3000/cancel`,
 
       }
@@ -77,10 +78,36 @@ app.post("/create-checkout-session",async(req,res)=>{
 
 })
 
+//order 
+app.post('api/orders', async (req, res) => {
+  try {
+    const orderData = req.body;
+
+    // Créer une nouvelle commande
+    const order = new Order(orderData);
+    await order.save();
+
+    res.status(201).json({ message: 'Order created successfully', order });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error creating order', error: error.message });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
 const PORT = process.env.PORT ||5050 ;
 
 app.listen(PORT,(err)=>{
   err ? console.log(err):
   console.log("server is running");
 })
-

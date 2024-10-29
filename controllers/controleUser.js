@@ -71,6 +71,8 @@ exports.login=async(req,res)=>{
             lastname: existUser.lastname,
             email: existUser.email,
             image: existUser.image,
+            address:existUser.address,
+            telephone:existUser.telephone,
         };
         console.log(dataSend);
           res.cookie('token',token)

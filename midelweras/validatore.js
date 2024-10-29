@@ -6,8 +6,9 @@ const SignupCheck = () => [
     check("password", "password should have at least 6 characters").isLength({ min: 6 }),
     check("firstname", "firstName should not empty").notEmpty().trim(),
     check("lastname", "lastName should not empty").notEmpty().trim(),
-    check("confirmPassword","'Passwords do not match'").isLength({ min: 6 })
-    
+    check("confirmPassword","'Passwords do not match'").isLength({ min: 6 }),
+    check("telephone","telephone should have at least 6 characters").isLength({ min: 8 }),
+    check("address","address should not empty").notEmpty().trim(),
     
 ];
 

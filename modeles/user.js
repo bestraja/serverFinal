@@ -9,6 +9,15 @@ const userSchema=mongoose.Schema({
           unique: true,
             },
      password: String,
+     telephone: {
+          type: String,
+          required: true,
+      },
+     address: {
+          type: String,
+          required: true,
+         
+      },
      confirmPassword: String,
      image: String,
      role:{type:String,enum:["user","admin"],default:"user"}
