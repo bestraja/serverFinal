@@ -74,7 +74,7 @@ exports.login=async(req,res)=>{
             telephone:existUser.telephone,
         };
        
-          res.cookie('vercel-feature-flags',token)
+          res.cookie('token',token)
           return res.send({ user: dataSend });
        
     } catch (error) {
