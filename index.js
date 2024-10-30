@@ -87,7 +87,7 @@ app.post("/create-checkout-session",async(req,res)=>{
 app.post('/api/orders', async (req, res) => {
   try {
    // Créer une nouvelle commande
-   console.log(req.body)
+  
     const order = new Order(req.body);
 
     await order.save();
@@ -117,7 +117,7 @@ app.get('/api/orders', async (req, res) => {
 
 
 
-console.log(process.env.FRONTEND_URL);
+
 
 const PORT = process.env.PORT ||5050 ;
 
