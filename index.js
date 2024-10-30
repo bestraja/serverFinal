@@ -13,9 +13,10 @@ var cookieParser = require('cookie-parser')
 
 
 const corsOptions = {
-   origin: 'http://localhost:3000',
+   origin:process.env.FRONTEND_URL,
+   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+   allowedHeaders: ['Content-Type', 'Authorization'], 
    credentials: true,
-   optionSuccessStatus: 200,
 }
 
 connectdb()

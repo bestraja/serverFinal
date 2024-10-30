@@ -6,11 +6,11 @@ const isAuth = require('../midelweras/IsAuth')
 
 
 
-router.post('/uploadProduct',isAuth(),upload("products").single("file"),productcontroller.addproduct)
+router.post('/uploadProduct',upload("products").single("file"),isAuth(),productcontroller.addproduct)
 router.get('/listproduct',productcontroller.getproducts)
 // query =>
 
-router.patch('/:id',isAuth(),upload("products").single("file"),productcontroller.updateproduct)
+router.patch('/:id',upload("products").single("file"),isAuth(),productcontroller.updateproduct)
 router.delete('/:id',isAuth(),productcontroller.deleteproduct)
 
 module.exports=router
