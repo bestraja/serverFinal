@@ -64,8 +64,11 @@ app.post("/create-checkout-session",async(req,res)=>{
             }
           }),
 
-          success_url :`http://localhost:3000/success`, 
-          cancel_url : `http://localhost:3000/cancel`,
+          
+
+         
+          success_url : `${process.env.FRONTEND_URL}/success`,
+          cancel_url : `${process.env.FRONTEND_URL}/cancel`,
 
       }
 
@@ -114,7 +117,7 @@ app.get('/api/orders', async (req, res) => {
 
 
 
-
+console.log(process.env.FRONTEND_URL);
 
 const PORT = process.env.PORT ||5050 ;
 
