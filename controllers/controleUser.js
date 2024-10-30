@@ -79,6 +79,7 @@ exports.login=async(req,res)=>{
        
     } catch (error) {
         
+        console.log(error)
         
     }
 }
