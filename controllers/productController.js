@@ -10,7 +10,7 @@ exports.addproduct = async (req, res) => {
         await newProduct.save();
   return res.status(201).send({msg:"product add succes"})
     } catch (error) {
-        console.error(error);
+       
 
     }
 };
@@ -20,7 +20,7 @@ exports.getproducts=async(req,res)=>{
       let getproducts= await product.find().populate("seller")
         return res.status(200).send(getproducts)
     } catch (error) {
-        console.log(error);
+       
     }
 }
 
@@ -28,7 +28,7 @@ exports.updateproduct=async(req,res)=>{
     try {
        
      
-    console.log(req.file)
+  
       if(req.file){
         productUpdated = await  product.findOne({ _id: req.params.id })
       const url = `${req.protocol}://${req.get("host")}/${req.file.path}`
@@ -39,7 +39,7 @@ exports.updateproduct=async(req,res)=>{
       return res.status(200).send(updateproducts)
 
     } catch (error) {
-        console.log(error);
+        
     }
 }
 
@@ -48,7 +48,6 @@ exports.deleteproduct=async(req,res)=>{
         let result=await product.deleteOne({_id:req.params.id})
         return res.status(200).send(result)
     } catch (error) {
-        console.log(error);
         
     }
 }

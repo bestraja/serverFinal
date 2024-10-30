@@ -4,8 +4,7 @@ const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res) => {
     const { email, password, role ,confirmPassword} = req.body;
-    console.log('Requête reçue:', req.body); 
-
+   
     try {
         
         if (role) {
@@ -13,7 +12,7 @@ exports.signup = async (req, res) => {
         }
 
         if (password !== confirmPassword) {
-            console.log('Les mots de passe ne correspondent pas.'); // Log si mots de passe non identiques
+           
             return res.status(400).send({ msg: "Les mots de passe ne correspondent pas." });
         }
         const emailExists = await User.findOne({ email: email });
@@ -43,7 +42,7 @@ exports.signup = async (req, res) => {
 
         return res.status(201).send({ msg: "Signup successful" });
     } catch (error) {
-        console.error(error);
+       
         return res.status(500).send({ msg: "Internal server error" }); // Handle errors properly
     }
 };
@@ -79,7 +78,7 @@ exports.login=async(req,res)=>{
           return res.send({ user: dataSend });
        
     } catch (error) {
-        console.log(error);
+        
         
     }
 }
