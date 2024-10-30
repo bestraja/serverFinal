@@ -11,9 +11,9 @@ const app = express();
 const connectdb=require("./config/connect")
 var cookieParser = require('cookie-parser')
 
-
+//https://client-final-delta.vercel.app
 const corsOptions = {
-   origin:'https://client-final-delta.vercel.app',
+   origin:'http://localhost:3000',
    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
    allowedHeaders: ['Content-Type', 'Authorization'], 
    credentials: true,
